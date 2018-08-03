@@ -1,0 +1,162 @@
+\documentclass{article}
+
+\usepackage{fancyhdr} % Required for custom headers
+\usepackage{lastpage} % Required to determine the last page for the footer
+\usepackage{extramarks} % Required for headers and footers
+\usepackage[usenames,dvipsnames]{color} % Required for custom colors
+\usepackage{graphicx} % Required to insert images
+\usepackage{listings} % Required for insertion of code
+\usepackage{courier} % Required for the courier font
+\usepackage{multirow}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+% Margins
+\topmargin=-0.45in
+\evensidemargin=0in
+\oddsidemargin=0in
+\textwidth=6.5in
+\textheight=9.0in
+\headsep=0.25in
+
+\linespread{1.1} % Line spacing
+
+%----------------------------------------------------------------------------------------
+%	CODE INCLUSION CONFIGURATION
+%----------------------------------------------------------------------------------------
+
+\definecolor{MyDarkGreen}{rgb}{0.0,0.4,0.0} % This is the color used for comments
+\lstloadlanguages{c} % Load Perl syntax for listings, for a list of other languages supported see: ftp://ftp.tex.ac.uk/tex-archive/macros/latex/contrib/listings/listings.pdf
+\lstset{language=[sharp]c, % Use Perl in this example
+        frame=single, % Single frame around code
+        basicstyle=\small\ttfamily, % Use small true type font
+        keywordstyle=[1]\color{Blue}\bf, % Perl functions bold and blue
+        keywordstyle=[2]\color{Purple}, % Perl function arguments purple
+        keywordstyle=[3]\color{Blue}\underbar, % Custom functions underlined and blue
+        identifierstyle=, % Nothing special about identifiers                                         
+        commentstyle=\usefont{T1}{pcr}{m}{sl}\color{MyDarkGreen}\small, % Comments small dark green courier font
+        stringstyle=\color{Purple}, % Strings are purple
+        showstringspaces=false, % Don't put marks in string spaces
+        tabsize=5, % 5 spaces per tab
+        %
+        % Put standard Perl functions not included in the default language here
+        morekeywords={rand},
+        %
+        % Put Perl function parameters here
+        morekeywords=[2]{on, off, interp},
+        %
+        % Put user defined functions here
+        morekeywords=[3]{test},
+       	%
+        morecomment=[l][\color{Blue}]{...}, % Line continuation (...) like blue comment
+        numbers=left, % Line numbers on left
+        firstnumber=1, % Line numbers start with line 1
+        numberstyle=\tiny\color{Blue}, % Line numbers are blue and small
+        stepnumber=5 % Line numbers go in steps of 5
+}
+
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}}
+
+% Creates a new command to include a perl script, the first parameter is the filename of the script (without .pl), the second parameter is the caption
+\newcommand{\perlscript}[2]{
+\begin{itemize}
+\item[]\lstinputlisting[caption=#2,label=#1]{#1.cs}
+\end{itemize}
+}
+
+\begin{document}
+
+\begin{tabular}{l l}
+\multirow{1}{*}
+ & Universidad del Istmo de Guatemala \\
+ & Facultad de Ingenieria \\
+ & Ing. en Sistemas \\
+ & Informatica 1 \\
+ & Jorge Luis Ortiz 
+\end{tabular}
+\\
+
+\begin{center}
+        \horrule{0.5pt}
+        \huge{Tarea 2} \\
+        
+        \horrule{1pt}
+\end{center}
+
+\emph{Instrucciones: Resolver cada uno de los ejercicios siguiendo sus respectivas
+instrucciones. El trabajo debe ser entregado a traves de Github, en su repositorio del curso, colocado en una carpeta llamada "Hoja de trabajo 1".
+Al menos que la pregunta indique diferente, todas las respuestas a preguntas escritas deben presentarse en
+un documento formato pdf, el cual haya sido generado mediante Latex. }
+
+% \perlscript{homework_example}{Sample Perl Script With Highlighting}
+\section*{Ejercicio \#1}
+Demostrar utilizando inducci\'on:
+\[
+        \forall\ n.\ n^3\geq n^2
+\]
+\\donde $n\in\mathbb{N}$
+\\
+\ Primero aplicamos el caso base, n=0
+\[ (0)^3 \geq (0)^2\]
+\[ 0 \geq 0 \]
+\ se cumple con el caso base.
+\\{\bf Por lo tanto:} esta desigualdad se cumple para n y se demostrara para su sucesor, osea n+1
+\[
+  (n+1)^3\geq (n+1)^2 
+\]
+\ Esto es lo mismo que decir:
+\[
+(n+1)(n+1)^2\geq (n+1)^2
+\]
+\ Se pasa a dividir $(n+1)^2$
+\[
+(n+1) \geq (n+1)^2 / (n+1)^2
+\]
+\ La division da 1
+\[
+n+1\geq 1
+\]
+\ Se pasa a restar el 1 al lado derecho
+\[
+n \geq 1-1
+\]
+\ Esto da como resultado:
+\[
+n \geq 0
+\]
+\ Entonces n sera mayor o igual a 0, por consiguiente se cumple que  $n\in\mathbb{N}$
+\section*{Ejercicio \#2}
+Demostrar utilizando inducci\'on la desigualdad de Bernoulli:
+\[
+        \forall\ n.\ (1+x)^n\geq nx
+\]
+\\donde $n\in \mathbb{N}$, $x\in \mathbb{Q}$ y $x\geq -1$
+\\
+donde el lado izquierdo es mayor que $nx + 1$. 
+\\
+\\Podemos decir que si $x \geq -1$ entonces $x+1 \geq 0$ 
+\\
+\begin{itemize}
+\item Aplicamos el caso base donde n=0
+\[ (1+x)^0 \geq 0x\]
+\[ 1 \geq 0 \]
+\ donde 1 es mayor o igual a 0.
+\\ 
+\item Demostracion por hipotesis inductiva (n+1), para llegar a esto, se opera de la siguiente manera: 
+\[ (1+x)^n * (1+x) \geq (nx+1)* (1+x) \]
+\[ (1+x)^{n+1} \geq nx+x+1+nx^2 \]
+\ se sabe que $nx^2 \geq 0$ , y por transitividad se tiene:
+\[ (1+x)^{n+1} \geq nx+x+1+nx^2 \geq nx+x+1\] 
+ \[ (1+x)^{n+1} \geq nx+x+1\]
+\[ (1+x)^{n+1} \geq x(n+1)+1 \]
+\ Por lo tanto, la formula es cierta para (n+1)
+
+
+
+\end{itemize}
+
+% \bibliography{../../recursos/referencias}
+% \bibliographystyle{plain}
+
+\end{document}
