@@ -13,4 +13,4 @@
 *.bbl
 *.blg
 *node_modules
-*elm-stuff
+*elm-stuffnode_modules/
