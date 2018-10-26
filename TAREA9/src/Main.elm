@@ -1,6 +1,6 @@
 import Browser
 import Html exposing (..)
-import Html.Events exposing (onClick)
+import Html.Events exposing (..)
 import Html.Attributes exposing (..)
 import Basics exposing (..)
 
@@ -10,11 +10,10 @@ main =
   Browser.sandbox { init = init , update = update, view = view }
 
 
--- MODEL
 
 type alias Calculadora = 
-  { suma : Float -> Float -> Float
-  , multi : Float -> Float -> Float
+  { suma : Int -> Int -> Int
+  , multi : Int -> Int -> Int
   }
 
 calculadora : Calculadora 
@@ -23,14 +22,14 @@ calculadora =
   , multi = (\x y -> x * y)
   }
 
-type alias Model = 
+type alias Modelo = 
   { display : String 
-  , function : Float -> Float -> Float
-  , saveValue : Float
+  , function : Int -> Int -> Int
+  , saveValue : Int
   , append : Bool 
   }
 
-init : Model
+init : Modelo
 init =
   { display = ""
    , function = (\x y -> y)
@@ -38,48 +37,47 @@ init =
    , append = True
   }
 
-parseFloat : String -> Float
-parseFloat input =
-  Maybe.withDefault 0 (String.toFloat input)
+parseInt : String -> Int
+parseInt input =
+  Maybe.withDefault 0 (String.toInt input)
 
-operacion : Model -> (Float -> Float -> Float) -> Model 
+operacion : Modelo -> (Int -> Int -> Int) -> Modelo
 operacion model function =
   {model 
     | function = function 
-    , saveValue = (parseFloat model.display)
+    , saveValue = (parseInt model.display)
     , append = False
   }
 
 
--- UPDATE
 
-type Msg = None | Suma | Multi | Igual | Cero | Numero Int | Limpiar
+type Msg = N | Suma | Multi | Igual | Cero | Numero Int | Limpiar
 
-update : Msg -> Model -> Model
-update msg model =
+update : Msg -> Modelo -> Modelo
+update msg modelo =
   case msg of
-    None ->
-      model
+    N ->
+      modelo
 
     Limpiar ->
       init 
     
     Numero numero ->
-      updateDisplay model numero 
+      updateDisplay modelo numero 
     
     Cero -> 
-      cero model 
+      cero modelo 
 
     Suma ->
-      operacion model calculadora.suma 
+      operacion modelo calculadora.suma 
 
     Multi -> 
-      operacion model calculadora.multi
+      operacion modelo calculadora.multi
     
     Igual -> 
-      igual model 
+      igual modelo 
   
-updateDisplay : Model -> Int -> Model 
+updateDisplay : Modelo -> Int -> Modelo
 updateDisplay model number = 
   if model.append then 
     {model | display = model.display ++ Debug.toString (number)}
@@ -88,32 +86,30 @@ updateDisplay model number =
 
 
 
-igual : Model -> Model 
-igual model = 
-  if model.append then
-    {model 
-      | display = calcular model 
-      , saveValue = model.display |> parseFloat
+igual : Modelo -> Modelo 
+igual modelo = 
+  if modelo.append then
+    {modelo 
+      | display = calcular modelo 
+      , saveValue = modelo.display |> parseInt
       , append = False 
     }
   else 
-  {model | display = calcular model, append = False }
+  {modelo | display = calcular modelo, append = False }
 
 
-calcular : Model -> String 
-calcular model =
-  model.function model.saveValue (parseFloat model.display) |> Debug.toString 
+calcular : Modelo -> String 
+calcular modelo =
+  modelo.function modelo.saveValue (parseInt modelo.display) |> Debug.toString 
 
-cero : Model -> Model 
-cero model = 
-  if String.isEmpty model.display || not model.append then
-    {model | display = "0" , append = False}
+cero : Modelo -> Modelo 
+cero modelo = 
+  if String.isEmpty modelo.display || not modelo.append then
+    {modelo | display = "0" , append = False}
   else 
-    {model | display = model.display ++ "0"}
+    {modelo | display = modelo.display ++ "0"}
 
 
-
--- VIEW
 
 calculadoraButton : Msg -> String  -> Html Msg
 calculadoraButton msg buttonText =
@@ -153,7 +149,7 @@ stylesheet =
 
 
 
-view : Model -> Html Msg
+view : Modelo -> Html Msg
 view model =
   div [class "calculadora"]
       [stylesheet
@@ -166,7 +162,8 @@ view model =
           [calculadoraButton (Numero 7) "7"
 
           , calculadoraButton (Numero 8) "8"
-          , calculadoraButton (Numero 9) "9"
+                   
+          ,calculadoraButton (Numero 9) "9"
           
           , calculadoraButton Suma "+"
           , div [] []
